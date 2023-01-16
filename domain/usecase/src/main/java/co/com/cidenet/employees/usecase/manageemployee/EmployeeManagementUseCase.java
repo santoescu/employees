@@ -12,19 +12,19 @@ public class EmployeeManagementUseCase {
     private final String EMAIL_STRUCTURE = "%s.%s@%s";
     private final EmployeeRepository employeeRepository;
     public Employee addEmployee(Employee employee) {
-        String domain;
-        if (employee.getCountry().equals("colombia")){
+        String domain="cidenet.com";
+        if (employee.getCountry().equals("co")){
             domain="cidenet.com.co";
-        }else{
+        }else if(employee.getCountry().equals("us")){
             domain="cidenet.com.us";
         }
-        String email = String.format(EMAIL_STRUCTURE,employee.getName(),employee.getLastName(),domain);
+        String email = String.format(EMAIL_STRUCTURE,employee.getName(),employee.getLastName().replace(" ",""),domain);
         List<Employee> employees = employeeRepository.findByNameAndAndLastNameAndCountry(employee.getName(),
                 employee.getLastName(),employee.getCountry());
-        employee.setEmail(email);
+        employee.setEmail(email.toLowerCase());
         if(!employees.isEmpty()){
-            int size= employees.size()+1;
-            employee.setEmail(String.format(EMAIL_STRUCTURE,employee.getName(),employee.getLastName()+"."+size,domain));
+            int size= employees.size();
+            employee.setEmail((String.format(EMAIL_STRUCTURE,employee.getName(),employee.getLastName().replace(" ","")+"."+size,domain)).toLowerCase());
         }
         return employeeRepository.addEmployee(employee);
     }

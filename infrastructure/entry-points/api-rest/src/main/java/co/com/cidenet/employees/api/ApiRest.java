@@ -3,6 +3,7 @@ import co.com.cidenet.employees.model.employee.Employee;
 import co.com.cidenet.employees.model.exception.BusinessException;
 import co.com.cidenet.employees.usecase.manageemployee.EmployeeManagementUseCase;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,8 +32,7 @@ public class ApiRest {
         } catch (BusinessException e) {
             return ResponseEntity.status(e.getStatusCode()).body(e.getDescription());
         }
-
-        return ResponseEntity.ok("El Empleado " + id + " fue eliminado exitosamente");
+        return ResponseEntity.status(HttpStatus.OK).body(Response.builder().respuesta("El Empleado " + id + " fue eliminado exitosamente").build());
     }
     @GetMapping(path = "/list")
     public List<Employee> getEmployees() {
